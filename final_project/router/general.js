@@ -1,9 +1,10 @@
 const express = require('express');
+const axios = require("axios");
 let books = require("./booksdb.js");
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
-
+const BOOKS_API = "https://reenikuruvil-5000.theianext-0-labs-prod-misc-tools-us-east-0.proxy.cognitiveclass.ai"; 
 
 // Check if a user with the given username already exists
 const doesExist = (username)=>{
@@ -41,6 +42,8 @@ public_users.get('/',function (req, res) {
   return res.send(JSON.stringify(books, null, 4));
 });
 
+
+
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   isbn = req.params.isbn;
@@ -69,4 +72,46 @@ public_users.get('/review/:isbn',function (req, res) {
   return res.send(books[isbn].reviews);
 });
 
+// with async await #Task 10
+public_users.get("/", async (req, res) => {
+  try {
+    const response = await axios.get(`${BOOKS_API}`);
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// with async await #Task 11
+public_users.get("/isbn/:isbn", async (req, res) => {
+  try {
+    const { isbn } = req.params;
+    const response = await axios.get(`${BOOKS_API}/isbn/${isbn}`);
+    res.json(response.data);
+  } catch (err) {
+    res.status(404).json({ error: "Book not found" });
+  }
+});
+
+// with async await #Task 12
+public_users.get("/author/:author", async (req, res) => {
+    try {
+      const { isbn } = req.params;
+      const response = await axios.get(`${BOOKS_API}/author/${author}`);
+      res.json(response.data);
+    } catch (err) {
+      res.status(404).json({ error: "Book not found" });
+    }
+  });
+
+  // with async await #Task 13
+public_users.get("/title/:title", async (req, res) => {
+    try {
+      const { isbn } = req.params;
+      const response = await axios.get(`${BOOKS_API}/title/${title}`);
+      res.json(response.data);
+    } catch (err) {
+      res.status(404).json({ error: "Book not found" });
+    }
+  });
 module.exports.general = public_users;
