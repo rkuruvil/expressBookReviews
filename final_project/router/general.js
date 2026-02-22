@@ -89,29 +89,29 @@ public_users.get("/isbn/:isbn", async (req, res) => {
     const response = await axios.get(`${BOOKS_API}/isbn/${isbn}`);
     res.json(response.data);
   } catch (err) {
-    res.status(404).json({ error: "Book not found" });
+    res.status(404).json({ error: "ISBN not found" });
   }
 });
 
 // with async await #Task 12
 public_users.get("/author/:author", async (req, res) => {
     try {
-      const { isbn } = req.params;
+      const { author } = req.params;
       const response = await axios.get(`${BOOKS_API}/author/${author}`);
       res.json(response.data);
     } catch (err) {
-      res.status(404).json({ error: "Book not found" });
+      res.status(404).json({ error: "Author not found" });
     }
   });
 
   // with async await #Task 13
 public_users.get("/title/:title", async (req, res) => {
     try {
-      const { isbn } = req.params;
+      const { title } = req.params;
       const response = await axios.get(`${BOOKS_API}/title/${title}`);
       res.json(response.data);
     } catch (err) {
-      res.status(404).json({ error: "Book not found" });
+      res.status(404).json({ error: "Title not found" });
     }
   });
 module.exports.general = public_users;
