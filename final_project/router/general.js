@@ -72,7 +72,7 @@ public_users.get('/books/review/:isbn',function (req, res) {
   if (!books[isbn]) {
     return res.status(404).json({ message: "Book not found" });
   }
-  return res.send(books[isbn].reviews);
+  return res.json(books[isbn].reviews);
 });
 
 // with async await #Task 10
